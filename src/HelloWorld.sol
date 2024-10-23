@@ -10,7 +10,10 @@ contract HelloWorld {
      *  The contract returns Hello World string.
      *
      */
-    function sayHelloWorld(address token) public returns (string memory) {
-        return IERC20(token).name();
+
+    string public name = "Hello World";
+
+    function sayHelloWorld(address token) public view returns (string memory) {
+        return this.name();
     }
 }
