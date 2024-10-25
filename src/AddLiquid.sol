@@ -16,9 +16,9 @@ contract AddLiquid {
     function addLiquidity(address usdc, address weth, address pool, uint256 usdcReserve, uint256 wethReserve) public {
         IUniswapV2Pair pair = IUniswapV2Pair(pool);
 
-        (uint256 reserve0, uint256 reserve1, ) = pair.getReserves();
+        (usdcReserve, wethReserve, ) = pair.getReserves();
 
-        uint256 usdcAmount = (1 ether * reserve0) / reserve1; // in USDC units
+        uint256 usdcAmount = (1 ether * usdcReserve) / wethReserve; // in USDC units
 
         // console2.log(usdcAmount);
 

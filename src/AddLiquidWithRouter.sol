@@ -2,6 +2,7 @@
 pragma solidity ^0.8.13;
 
 import "./interfaces/IUniswapV2Pair.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract AddLiquidWithRouter {
     /**
@@ -19,9 +20,28 @@ contract AddLiquidWithRouter {
     }
 
     function addLiquidityWithRouter(address usdcAddress, uint256 deadline) public {
-        // your code start here
+        // Initialize the routerInstance here, where `router` is already assigned
+        IUniswapV2Router routerInstance = IUniswapV2Router(router);
+
+        uint256 usdcAmount = 1000 * 10 ** 6;
+        uint256 ethAmount = 1 ether;
+
+        uint256 minUsdc = usdcAmount * 95 / 100;  // 95% of USDC amount
+        uint256 minEth = ethAmount * 95 / 100;    // 95% of ETH amount
+
+        require(IERC20(usdcAddress).approve(router, usdcAmount), "USDC approve failed");
+
+        routerInstance.addLiquidityETH{ value: ethAmount }(
+            usdcAddress,
+            usdcAmount,
+            minUsdc,
+            minEth,
+            msg.sender,  // Receiver of the LP tokens
+            deadline
+        );
     }
 
+    // allow contract to recieve eth
     receive() external payable {}
 }
 
