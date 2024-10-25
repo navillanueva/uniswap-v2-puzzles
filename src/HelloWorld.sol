@@ -13,7 +13,7 @@ contract HelloWorld {
 
     string public name = "Hello World";
 
-    function sayHelloWorld() public view returns (string memory) {
+    function sayHelloWorld(address) public view returns (string memory) {
         return this.name();
     }
 }

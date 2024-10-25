@@ -2,7 +2,7 @@
 pragma solidity ^0.8.13;
 
 import "./interfaces/IUniswapV2Pair.sol";
-// import "../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract AddLiquid {
     /**
@@ -20,7 +20,7 @@ contract AddLiquid {
 
         uint256 usdcAmount = (1 ether * reserve0) / reserve1; // in USDC units
 
-        console2.log(usdcAmount);
+        // console2.log(usdcAmount);
 
         IERC20(usdc).approve(pool, usdcAmount);
         IERC20(weth).approve(pool, 1 ether);
