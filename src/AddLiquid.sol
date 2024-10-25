@@ -2,6 +2,7 @@
 pragma solidity ^0.8.13;
 
 import "./interfaces/IUniswapV2Pair.sol";
+// import "../../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 
 contract AddLiquid {
     /**
@@ -15,11 +16,19 @@ contract AddLiquid {
     function addLiquidity(address usdc, address weth, address pool, uint256 usdcReserve, uint256 wethReserve) public {
         IUniswapV2Pair pair = IUniswapV2Pair(pool);
 
-        // your code start here
+        (uint256 reserve0, uint256 reserve1, ) = pair.getReserves();
 
-        // see available functions here: https://github.com/Uniswap/v2-core/blob/master/contracts/interfaces/IUniswapV2Pair.sol
+        uint256 usdcAmount = (1 ether * reserve0) / reserve1; // in USDC units
 
-        // pair.getReserves();
-        // pair.mint(...);
+        console2.log(usdcAmount);
+
+        IERC20(usdc).approve(pool, usdcAmount);
+        IERC20(weth).approve(pool, 1 ether);
+
+        require(IERC20(usdc).transfer(pool, usdcAmount), "USDC transfer failed");
+        require(IERC20(weth).transfer(pool, 1 ether), "WETH transfer failed");
+
+        // Call mint to add liquidity and mint LP tokens to msg.sender
+        pair.mint(msg.sender);
     }
 }
